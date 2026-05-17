@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  role      String   @default("STUDENT")
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Student {
+  stdID              Int       @id @default(autoincrement())
+  Fname              String?
+  Lname              String?
+  MaritalStatus      String?
+  Occupation         String?
+  CODE               Boolean?
+  Gender             String?
+  DOB                DateTime?
+  DateEnrolled       DateTime?
+  ProvinceCODE       String?
+  DistrictID         Int?
+  DenominationID     Int?
+  hAddress1          String?
+  hAddress2          String?
+  hAddress3          String?
+  hAddress4          String?
+  hPhoneNo           String?
+  hFaxNo             String?
+  Comments           String?
+  certRCVD           Boolean?
+  StudentNo          Int?
+  LastSchoolAttended String?
+  LastSchoolYear     String?
+  LastSchoolGrade    String?
+  LastSchoolCertNo   String?
+
+  marks              Mark[]
+  fees               Fee[]
+}
+
+model Mark {
+  id               Int       @id @default(autoincrement())
+  stdID            Int
+  DateRegistered   DateTime?
+  subjID           String?
+  AS1              Int?
+  as1dateRetn      DateTime?
+  AS2              Int?
+  as2dateRetn      DateTime?
+  AS3              Int?
+  as3dateRetn      DateTime?
+  AS4              Int?
+  as4dateRetn      DateTime?
+  AS5              Int?
+  as5dateRetn      DateTime?
+  AS6              Int?
+  as6dateRetn      DateTime?
+  ApplyExam        Boolean?
+  DateApplyExam    DateTime?
+  ExamRecvd        Boolean?
+  DateExamRecvd    DateTime?
+  Sat4Exam         Boolean?
+  DateSat4Exam     DateTime?
+  ExamRating       String?
+  subjComplete     Boolean?
+  subjFEE          Int?
+  MockExamResult   Int?
+  DateSatMockExam  DateTime?
+
+  student          Student   @relation(fields: [stdID], references: [stdID])
+}
+
+model Fee {
+  id         Int       @id @default(autoincrement())
+  stdID      Int
+  subjID     String?
+  AmtPaid    Int?
+  ReceiptNo  String?
+  Date_Paid  DateTime?
+  AmtDUE     Int?
+  Comments   String?
+
+  student    Student   @relation(fields: [stdID], references: [stdID])
+}
+
+model District {
+  DistrictID   Int     @id
+  DistrictNo   Int?
+  ProvinceCode String?
+  DistrictName String?
+}
+
+model Province {
+  ProvinceCode String  @id
+  ProvinceNo   Int?
+  ProvinceName String?
+}
+
+model Denomination {
+  DenominationID   Int     @id
+  DenominationDesc String?
+}
+
+model Grade {
+  GradeID   Int     @id
+  gradeNAME String?
+}
+
+model SubjectCost {
+  SubjID    String  @id
+  SubjName  String?
+  GradeID   Int?
+  SubGrCODE String?
+  Cost      Float?
+}
+
+model Institution {
+  id                  Int     @id @default(autoincrement())
+  InstitutionName     String?
+  InstitutionNumber   Int?
+  InstitutionAddress1 String?
+  InstitutionAddress2 String?
+  InstitutionAddress3 String?
+  InstitutionAddress4 String?
+  InstitutionPhone    Int?
+  InstitutionFax      Int?
+  ProvincialCode      Int?
+}
